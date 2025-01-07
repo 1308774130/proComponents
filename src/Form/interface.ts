@@ -1,20 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { ReactNode } from 'react';
 import type {
   FormProps as AntFormProps,
-  InputProps,
-  SelectProps,
   DatePickerProps,
-  SwitchProps,
+  InputNumberProps,
+  InputProps,
+  MentionProps,
   RadioGroupProps,
   RateProps,
-  InputNumberProps,
+  SelectProps,
+  SwitchProps,
   TreeSelectProps,
-  MentionProps,
 } from 'antd';
 import { CheckboxGroupProps } from 'antd/lib/checkbox/Group';
+import type { ReactNode } from 'react';
 
-export type FormValues = Record<string, string | number | boolean | string[] | null | undefined>;
+export type FormValues = Record<
+  string,
+  string | number | boolean | string[] | null | undefined
+>;
 
 type ValidatorRule = {
   type?: 'email' | 'url' | 'string' | 'number';
@@ -45,11 +48,15 @@ type BaseColumnProps = {
 type PickerType = 'time' | 'date' | 'week' | 'month' | 'quarter' | 'year';
 
 export type FormColumn =
-  | ({ type: 'input' } & BaseColumnProps & { props?: BaseControlProps & InputProps })
+  | ({ type: 'input' } & BaseColumnProps & {
+        props?: BaseControlProps & InputProps;
+      })
   | ({
       type: 'select';
       options: { label: string; value: string | number }[];
-    } & BaseColumnProps & { props?: BaseControlProps & Omit<SelectProps<any>, 'options'> })
+    } & BaseColumnProps & {
+        props?: BaseControlProps & Omit<SelectProps<any>, 'options'>;
+      })
   | ({
       type: 'date';
       picker?: PickerType;
@@ -58,13 +65,21 @@ export type FormColumn =
   | ({
       type: 'radio';
       options: { label: string; value: string | number }[];
-    } & BaseColumnProps & { props?: BaseControlProps & Omit<RadioGroupProps, 'options'> })
+    } & BaseColumnProps & {
+        props?: BaseControlProps & Omit<RadioGroupProps, 'options'>;
+      })
   | ({
       type: 'checkbox';
       options: { label: string; value: string | number }[];
-    } & BaseColumnProps & { props?: BaseControlProps & Omit<CheckboxGroupProps, 'options'> })
-  | ({ type: 'switch' } & BaseColumnProps & { props?: BaseControlProps & SwitchProps })
-  | ({ type: 'rate' } & BaseColumnProps & { props?: BaseControlProps & RateProps })
+    } & BaseColumnProps & {
+        props?: BaseControlProps & Omit<CheckboxGroupProps, 'options'>;
+      })
+  | ({ type: 'switch' } & BaseColumnProps & {
+        props?: BaseControlProps & SwitchProps;
+      })
+  | ({ type: 'rate' } & BaseColumnProps & {
+        props?: BaseControlProps & RateProps;
+      })
   | ({
       type: 'number';
       min?: number;
@@ -75,8 +90,12 @@ export type FormColumn =
         props?: BaseControlProps &
           Omit<InputNumberProps, 'min' | 'max' | 'step' | 'decimalSeparator'>;
       })
-  | ({ type: 'treeSelect' } & BaseColumnProps & { props?: BaseControlProps & TreeSelectProps<any> })
-  | ({ type: 'mention' } & BaseColumnProps & { props?: BaseControlProps & MentionProps })
+  | ({ type: 'treeSelect' } & BaseColumnProps & {
+        props?: BaseControlProps & TreeSelectProps<any>;
+      })
+  | ({ type: 'mention' } & BaseColumnProps & {
+        props?: BaseControlProps & MentionProps;
+      })
   | ({
       type: string;
     } & BaseColumnProps & { props?: BaseControlProps & Record<string, any> });
@@ -92,7 +111,10 @@ export interface CustomComponentProps {
 }
 
 // 自定义组件类型
-type CustomComponent = (props: CustomComponentProps, form: FormRef) => React.ReactNode;
+type CustomComponent = (
+  props: CustomComponentProps,
+  form: FormRef,
+) => React.ReactNode;
 
 export interface FormProps extends Omit<AntFormProps, 'form'> {
   columns: FormColumn[];

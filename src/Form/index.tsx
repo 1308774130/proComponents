@@ -1,36 +1,35 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useImperativeHandle, forwardRef, ReactNode } from 'react';
-import {
-  Form as AntForm,
-  Input,
-  Select,
-  DatePicker,
-  Switch,
-  Radio,
-  Checkbox,
-  Rate,
-  InputNumber,
-  TreeSelect,
-  Mentions,
-  Button,
-  Space,
-} from 'antd';
 import type {
-  SelectProps,
   DatePickerProps,
-  SwitchProps,
+  InputNumberProps,
+  InputProps,
+  MentionProps,
   RadioGroupProps,
   RateProps,
-  InputNumberProps,
+  SwitchProps,
   TreeSelectProps,
-  MentionProps,
-  InputProps,
 } from 'antd';
-import type { FormProps, FormColumn, FormRef } from './interface';
-import { Rule } from 'antd/lib/form';
+import {
+  Form as AntForm,
+  Button,
+  Checkbox,
+  DatePicker,
+  Input,
+  InputNumber,
+  Mentions,
+  Radio,
+  Rate,
+  Space,
+  Switch,
+  TreeSelect,
+} from 'antd';
 import { CheckboxGroupProps } from 'antd/lib/checkbox';
-import React from 'react';
 import type { RangePickerProps } from 'antd/lib/date-picker/generatePicker';
+import { Rule } from 'antd/lib/form';
+import { Select } from 'pro-components';
+import { SelectProps } from 'pro-components/Select/interface';
+import React, { ReactNode, forwardRef, useImperativeHandle } from 'react';
+import type { FormColumn, FormProps, FormRef } from './interface';
 
 const Form = forwardRef<FormRef, FormProps>(
   ({ columns, header, footer, components = {}, onFinish, ...restProps }, ref) => {
@@ -68,7 +67,10 @@ const Form = forwardRef<FormRef, FormProps>(
           placeholder: placeholder || defaultPlaceholder,
           disabled,
           readOnly,
-          style: { width: restProps.width || type === 'switch' ? 'auto' : '100%', ...props?.style },
+          style: {
+            width: restProps.width || type === 'switch' ? 'auto' : '100%',
+            ...props?.style,
+          },
           ...restProps,
           ...props,
         };
@@ -90,7 +92,7 @@ const Form = forwardRef<FormRef, FormProps>(
             return (
               <Select
                 placeholder={placeholder || `请选择${label}`}
-                {...(componentProps as SelectProps<any>)}
+                {...(componentProps as SelectProps)}
               />
             );
           case 'date': {
@@ -263,7 +265,5 @@ const Form = forwardRef<FormRef, FormProps>(
     );
   }
 );
-
-Form.displayName = 'Form';
 
 export default Form;
