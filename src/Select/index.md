@@ -2,7 +2,7 @@
 
 基于 Antd Select 的二次封装，为需要下拉框增加“全选”功能场景提供支持。
 
-## demo 🌰
+## 基础用法 🌰
 
 <code src="./demo/index.tsx"></code>
 

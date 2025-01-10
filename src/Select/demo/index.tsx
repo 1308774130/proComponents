@@ -1,5 +1,5 @@
 import { Typography } from 'antd';
-import { Select } from 'pro-components';
+import { Select } from 'cruise-components';
 import React from 'react';
 import { normalOptions, options } from './mock';
 
@@ -11,7 +11,11 @@ const App = () => {
   return (
     <>
       <Typography.Title level={3}>基本使用-antd</Typography.Title>
-      <Select options={normalOptions} onChange={handleSelectChange} defaultValue="lucy" />
+      <Select
+        options={normalOptions}
+        onChange={handleSelectChange}
+        defaultValue="lucy"
+      />
       <Typography.Title level={3}>单选-全选</Typography.Title>
       <Select
         options={options}

@@ -1,9 +1,11 @@
-# pro-components
+# cruise-components
 
 node v20
 
-[![NPM version](https://img.shields.io/npm/v/pro-components.svg?style=flat)](https://npmjs.org/package/pro-components)
-[![NPM downloads](http://img.shields.io/npm/dm/pro-components.svg?style=flat)](https://npmjs.org/package/pro-components)
+[![NPM version](https://img.shields.io/npm/v/cruise-components.svg?style=flat)](https://npmjs.org/package/cruise-components)
+[![NPM downloads](http://img.shields.io/npm/dm/cruise-components.svg?style=flat)](https://npmjs.org/package/cruise-components)
+
+邮轮 B 端组件库
 
 ## Usage
 

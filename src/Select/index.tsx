@@ -15,7 +15,7 @@ const Select = forwardRef<any, SelectProps>(
       style = { width: '100%' },
       ...restProps
     },
-    ref
+    ref,
   ) => {
     const selectAllValue = allValue === true ? 'selectAll' : allValue || '';
     const [selectedValues, setSelectedValues] = useState<any[]>();
@@ -29,7 +29,7 @@ const Select = forwardRef<any, SelectProps>(
             changeValue = value.filter((v: any) => v !== selectAllValue);
           } else {
             setSelectedValues([selectAllValue]);
-            changeValue = options.map(option => option[valueKey]);
+            changeValue = options.map((option) => option[valueKey]);
           }
         } else {
           setSelectedValues(value);
@@ -47,7 +47,7 @@ const Select = forwardRef<any, SelectProps>(
     };
 
     const renderOptions = () => {
-      const renderedOptions = options.map(option => (
+      const renderedOptions = options.map((option) => (
         <AntSelect.Option key={option[valueKey]} value={option[valueKey]}>
           {option[labelKey]}
         </AntSelect.Option>
@@ -57,7 +57,7 @@ const Select = forwardRef<any, SelectProps>(
         renderedOptions.unshift(
           <AntSelect.Option key="all-key" value={selectAllValue}>
             {allText}
-          </AntSelect.Option>
+          </AntSelect.Option>,
         );
       }
 
@@ -80,7 +80,7 @@ const Select = forwardRef<any, SelectProps>(
         {renderOptions()}
       </AntSelect>
     );
-  }
+  },
 );
 
 export default Select;

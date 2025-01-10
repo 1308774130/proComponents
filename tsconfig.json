@@ -8,8 +8,8 @@
     "baseUrl": "./",
     "paths": {
       "@@/*": [".dumi/tmp/*"],
-      "pro-components": ["src"],
-      "pro-components/*": ["src/*", "*"]
+      "cruise-components": ["src"],
+      "cruise-components/*": ["src/*", "*"]
     },
     "types": ["node"]
   },

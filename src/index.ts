@@ -1,17 +1,17 @@
+import useForm from 'antd/lib/form/hooks/useForm';
 import Form from './Form';
+import QueryTable from './QueryTable';
+import type { QueryTableRef } from './QueryTable/interface';
 import Select from './Select';
+
 // 引入全局样式
-import 'antd/dist/antd.less'; // 使用 less 而不是 css
+import 'antd/dist/antd.less';
 
-// 此文件由脚本自动生成，请勿手动修改
-export { default as Form } from './Form';
-export { default as Select } from './Select';
-// ... 其他组件的导出
+export { Form, QueryTable, Select, useForm };
+export type { QueryTableRef };
 
-// 导出所有组件
-const components = {
+export default {
   Select,
   Form,
+  QueryTable,
 };
-
-export default components;

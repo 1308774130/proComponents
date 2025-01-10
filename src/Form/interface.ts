@@ -2,6 +2,7 @@
 import type {
   FormProps as AntFormProps,
   DatePickerProps,
+  FormInstance,
   InputNumberProps,
   InputProps,
   MentionProps,
@@ -12,6 +13,7 @@ import type {
   TreeSelectProps,
 } from 'antd';
 import { CheckboxGroupProps } from 'antd/lib/checkbox/Group';
+import { Gutter } from 'antd/lib/grid/row';
 import type { ReactNode } from 'react';
 
 export type FormValues = Record<
@@ -113,14 +115,16 @@ export interface CustomComponentProps {
 // 自定义组件类型
 type CustomComponent = (
   props: CustomComponentProps,
-  form: FormRef,
+  form: FormInstance<any>,
 ) => React.ReactNode;
 
-export interface FormProps extends Omit<AntFormProps, 'form'> {
+export interface FormProps extends AntFormProps {
   columns: FormColumn[];
   header?: ReactNode;
   footer?: FooterContent;
   components?: Record<string, CustomComponent>;
+  columnGrid?: number;
+  columnGap?: Gutter | [Gutter, Gutter];
 }
 
 export interface FormRef {

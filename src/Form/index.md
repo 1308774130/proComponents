@@ -2,7 +2,7 @@
 
 基于 Antd Form 的二次封装，可以通过 `components` 属性自定义表单项组件。
 
-## demo 🌰
+## 基础用法 🌰
 
 <code src="./demo/index.tsx"></code>
 

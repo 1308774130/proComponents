@@ -89,7 +89,7 @@ export const columns: FormColumn[] = [
     type: 'input',
     field: 'activitiesExtra',
     label: ' ',
-    hide: values => !values?.activities?.includes('other'),
+    hide: (values) => !values?.activities?.includes('other'),
   },
   {
     type: 'switch',

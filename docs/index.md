@@ -1,6 +1,7 @@
 ---
 hero:
   title: library
+  description: 邮轮B端组件库
   actions:
     - text: Hello
       link: /
@@ -18,4 +19,4 @@ features:
     description: Put ! description here
 ---
 
-pro-components
+cruise-components

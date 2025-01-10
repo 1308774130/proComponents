@@ -1,23 +1,22 @@
 import { Button, message } from 'antd';
-import { Form } from 'pro-components';
-import React, { useRef } from 'react';
-import { FormRef } from '../interface';
+import { Form, useForm } from 'cruise-components';
+import React from 'react';
 import { CustomInput } from './components/CustomInput';
 import { defaultValues } from './mock';
 import { columns } from './setting';
 
 const Demo: React.FC = () => {
-  const formRef = useRef<FormRef>(null);
+  const [form] = useForm();
 
   const handleSubmit = async (values: any) => {
     try {
       // 模拟提交
-      await new Promise(resolve => {
+      await new Promise((resolve) => {
         setTimeout(resolve, 1000);
       });
       message.success('预订成功！我们将尽快与您联系确认行程。');
       console.log('预订信息：', values);
-      formRef.current?.resetFields();
+      form.resetFields();
     } catch (error) {
       message.error('预订失败，请稍后重试');
     }
@@ -25,12 +24,12 @@ const Demo: React.FC = () => {
 
   // 填充表单数据
   const fillFormData = () => {
-    formRef.current?.setFieldsValue(defaultValues);
+    form.setFieldsValue(defaultValues);
   };
 
   return (
     <Form
-      ref={formRef}
+      form={form}
       columns={columns}
       onFinish={handleSubmit}
       header={
@@ -41,7 +40,7 @@ const Demo: React.FC = () => {
             margin: '20px 0',
           }}
         >
-          <h2>预订表单</h2>
+          <h2>邮轮跟团游预订表单</h2>
           <Button type="primary" onClick={fillFormData}>
             填充示例数据
           </Button>
