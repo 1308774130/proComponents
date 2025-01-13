@@ -5,7 +5,7 @@ import { SelectProps } from './interface';
 const Select = forwardRef<any, SelectProps>(
   (
     {
-      options,
+      options = [],
       labelKey = 'label',
       valueKey = 'value',
       allValue = false,

@@ -1,5 +1,6 @@
 import { useAntdTable } from 'ahooks';
 import { Button, Card, Space, Table, TablePaginationConfig } from 'antd';
+import { useWatch } from 'antd/lib/form/Form';
 import { Form, useForm } from 'cruise-components';
 import React, {
   forwardRef,
@@ -44,12 +45,13 @@ const QueryTable = forwardRef<QueryTableRef, QueryTableProps>(
       current: DEFAULT_CURRENT,
       pageSize: DEFAULT_PAGE_SIZE,
     });
-
-    const temp = formRef?.getFieldsValue();
+    // const watchValues = useWatchForm(formRef);
+    const watchValues = useWatch(['name2'], formRef);
 
     useEffect(() => {
-      console.log('-------------', temp);
-    });
+      console.log(111, watchValues);
+    }, [watchValues]);
+
     useEffect(() => {
       console.log(refreshDeps);
     }, [refreshDeps]);
@@ -168,10 +170,6 @@ const QueryTable = forwardRef<QueryTableRef, QueryTableProps>(
               form={formRef}
               columns={searchColumns}
               onFinish={submit}
-              onValuesChange={() => {
-                console.log('onValuesChange');
-                submit();
-              }}
               {...formProps}
             />
           </div>

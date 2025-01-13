@@ -4,7 +4,11 @@
 
 ## 基础用法 🌰
 
-<code src="./demo/index.tsx"></code>
+<code src="./demo/form1.tsx"></code>
+
+## 表单联动 🌰
+
+<code src="./demo/form2.tsx"></code>
 
 ## API
 

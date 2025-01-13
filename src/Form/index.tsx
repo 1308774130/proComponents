@@ -30,23 +30,53 @@ import type { RangePickerProps } from 'antd/lib/date-picker/generatePicker';
 import { Rule } from 'antd/lib/form';
 import { Select } from 'cruise-components';
 import { SelectProps } from 'cruise-components/Select/interface';
-import React, { ReactNode, forwardRef, useEffect, useState } from 'react';
-import type { FormColumn, FormProps, FormRef } from './interface';
+import React, {
+  ReactNode,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react';
+import type { FormColumn, FormInstance, FormProps } from './interface';
 
-const Form = forwardRef<FormRef, FormProps>(
-  ({
-    columns,
-    header,
-    footer,
-    components = {},
-    onFinish,
-    form: propsForm,
-    columnGrid = 1,
-    columnGap = 16,
-    ...restProps
-  }) => {
+const Form = forwardRef<FormInstance, FormProps>(
+  (
+    {
+      columns,
+      header,
+      footer,
+      components = {},
+      onFinish,
+      form: propsForm,
+      columnGrid = 1,
+      columnGap = 16,
+      ...restProps
+    },
+    ref,
+  ) => {
     const [form] = AntForm.useForm();
     const finalForm = propsForm || form;
+    const [formColumns, setFormColumns] = useState<FormColumn[]>(columns);
+    const [updatedFields, setUpdatedFields] = useState<Set<string>>(new Set());
+
+    finalForm.setFieldItem = (field: string, config: Partial<FormColumn>) => {
+      setFormColumns((prev) =>
+        prev.map((item) =>
+          item.field === field ? { ...item, ...config } : item,
+        ),
+      );
+      setUpdatedFields((prev) => new Set(prev).add(field));
+    };
+
+    finalForm.getFieldItem = (field: string) =>
+      formColumns.find((item) => item.field === field);
+
+    useImperativeHandle(ref, () => finalForm, [finalForm]);
+
+    useEffect(() => {
+      setFormColumns(columns);
+    }, [columns]);
+
     const [span, setSpan] = useState(24 / columnGrid);
 
     useEffect(() => {
@@ -91,7 +121,7 @@ const Form = forwardRef<FormRef, FormProps>(
                 finalForm.setFieldValue(field, value);
               },
             },
-            form as unknown as FormRef,
+            form as unknown as FormInstance,
           );
         }
         switch (type) {
@@ -195,13 +225,24 @@ const Form = forwardRef<FormRef, FormProps>(
           label={label}
           rules={getRules()}
           colon={!!label?.trim()}
+          shouldUpdate={(prevValues, curValues) => {
+            if (updatedFields.has(field)) {
+              setUpdatedFields((prev) => {
+                const next = new Set(prev);
+                next.delete(field);
+                return next;
+              });
+              return true;
+            }
+            return prevValues[field] !== curValues[field];
+          }}
         >
           {getComponent()}
         </AntForm.Item>
       );
 
       return hide ? (
-        <AntForm.Item noStyle shouldUpdate>
+        <AntForm.Item noStyle shouldUpdate key={field}>
           {(finalForm) => {
             const values = finalForm.getFieldsValue();
             const isHidden = typeof hide === 'function' ? hide(values) : hide;
@@ -274,12 +315,11 @@ const Form = forwardRef<FormRef, FormProps>(
       );
     };
 
-    console.log(restProps);
     return (
       <AntForm form={finalForm} onFinish={onFinish} {...restProps}>
         {header}
         <Row gutter={columnGap}>
-          {columns.map((column, index) => (
+          {formColumns.map((column, index) => (
             <Col span={span} key={column.field || `column-${index}`}>
               {renderFormItem(column)}
             </Col>

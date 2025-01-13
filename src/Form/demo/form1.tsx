@@ -3,7 +3,7 @@ import { Form, useForm } from 'cruise-components';
 import React from 'react';
 import { CustomInput } from './components/CustomInput';
 import { defaultValues } from './mock';
-import { columns } from './setting';
+import { columns1 } from './setting';
 
 const Demo: React.FC = () => {
   const [form] = useForm();
@@ -30,7 +30,7 @@ const Demo: React.FC = () => {
   return (
     <Form
       form={form}
-      columns={columns}
+      columns={columns1}
       onFinish={handleSubmit}
       header={
         <div

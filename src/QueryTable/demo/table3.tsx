@@ -41,6 +41,8 @@ const Demo = () => {
       formProps={{
         form: form,
       }}
+      autoRefresh={false}
+      noReset
       remoteRequest={handleRequest}
       firstRequest={true}
       rowKey="id"

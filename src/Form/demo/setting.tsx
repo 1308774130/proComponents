@@ -1,6 +1,6 @@
 import { FormColumn } from '../interface';
 
-export const columns: FormColumn[] = [
+export const columns1: FormColumn[] = [
   {
     type: 'customInput',
     field: 'customInput',
@@ -127,5 +127,33 @@ export const columns: FormColumn[] = [
     label: '手机号码',
     required: true,
     validator: /^1[3-9]\d{9}$/,
+  },
+];
+
+export const columns2 = (onchange) => [
+  {
+    type: 'select',
+    field: 'select1',
+    label: 'select1',
+    options: [
+      { label: '选项1', value: 1 },
+      { label: '选项2', value: 2 },
+      { label: '选项3', value: 3 },
+    ],
+    onChange: onchange,
+  },
+  {
+    type: 'select',
+    field: 'select2',
+    label: 'select2',
+    onChange: (value, form) => {
+      console.log(form);
+      // form.setFieldItem('select3', value);
+    },
+  },
+  {
+    field: 'select3',
+    label: 'select2的值',
+    hide: (values) => !values?.select2,
   },
 ];

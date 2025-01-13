@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type {
+  FormInstance as AntFormInstance,
   FormProps as AntFormProps,
   DatePickerProps,
-  FormInstance,
   InputNumberProps,
   InputProps,
   MentionProps,
@@ -115,7 +115,7 @@ export interface CustomComponentProps {
 // 自定义组件类型
 type CustomComponent = (
   props: CustomComponentProps,
-  form: FormInstance<any>,
+  form: FormInstance,
 ) => React.ReactNode;
 
 export interface FormProps extends AntFormProps {
@@ -127,13 +127,7 @@ export interface FormProps extends AntFormProps {
   columnGap?: Gutter | [Gutter, Gutter];
 }
 
-export interface FormRef {
-  getFieldValue: (name: string) => any;
-  getFieldsValue: (nameList?: string[]) => any;
-  setFieldValue: (name: string, value: any) => void;
-  setFieldsValue: (values: Record<string, any>) => void;
-  resetFields: (fields?: string[]) => void;
-  validateFields: () => Promise<any>;
-  submit: () => void;
-  scrollToField: (name: string, options?: ScrollOptions) => void;
+export interface FormInstance extends AntFormInstance {
+  setFieldItem: (field: string, config: Partial<FormColumn>) => void;
+  getFieldItem: (field: string) => FormColumn | undefined;
 }
