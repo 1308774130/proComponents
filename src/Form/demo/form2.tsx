@@ -5,7 +5,7 @@ import { columns2 } from './setting';
 const Demo: React.FC = () => {
   const [form] = useForm();
 
-  const getSelectOptions = (value) => {
+  const getSelectOptions = value => {
     const count = Math.floor(Math.random() * 5) + 3; // 生成3-7个选项
     const options = [];
 
@@ -19,7 +19,7 @@ const Demo: React.FC = () => {
     form.setFieldItem('select2', { options });
   };
 
-  const select1Change = (value) => {
+  const select1Change = value => {
     getSelectOptions(value);
   };
 

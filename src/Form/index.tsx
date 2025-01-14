@@ -30,13 +30,7 @@ import type { RangePickerProps } from 'antd/lib/date-picker/generatePicker';
 import { Rule } from 'antd/lib/form';
 import { Select } from 'cruise-components';
 import { SelectProps } from 'cruise-components/Select/interface';
-import React, {
-  ReactNode,
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useState,
-} from 'react';
+import React, { ReactNode, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import type { FormColumn, FormInstance, FormProps } from './interface';
 
 const Form = forwardRef<FormInstance, FormProps>(
@@ -52,7 +46,7 @@ const Form = forwardRef<FormInstance, FormProps>(
       columnGap = 16,
       ...restProps
     },
-    ref,
+    ref
   ) => {
     const [form] = AntForm.useForm();
     const finalForm = propsForm || form;
@@ -60,16 +54,13 @@ const Form = forwardRef<FormInstance, FormProps>(
     const [updatedFields, setUpdatedFields] = useState<Set<string>>(new Set());
 
     finalForm.setFieldItem = (field: string, config: Partial<FormColumn>) => {
-      setFormColumns((prev) =>
-        prev.map((item) =>
-          item.field === field ? { ...item, ...config } : item,
-        ),
+      setFormColumns(prev =>
+        prev.map(item => (item.field === field ? { ...item, ...config } : item))
       );
-      setUpdatedFields((prev) => new Set(prev).add(field));
+      setUpdatedFields(prev => new Set(prev).add(field));
     };
 
-    finalForm.getFieldItem = (field: string) =>
-      formColumns.find((item) => item.field === field);
+    finalForm.getFieldItem = (field: string) => formColumns.find(item => item.field === field);
 
     useImperativeHandle(ref, () => finalForm, [finalForm]);
 
@@ -110,18 +101,31 @@ const Form = forwardRef<FormInstance, FormProps>(
           },
           ...restProps,
           ...props,
+          onChange: (value: any, ...args: any[]) => {
+            // 先调用原始的 onChange
+            if (restProps?.onChange) {
+              // 处理不同控件的值
+              const finalValue = value?.target?.value ?? value;
+              restProps.onChange(finalValue, finalForm, ...args);
+            }
+            // 设置表单值
+            finalForm.setFieldValue(field, value?.target?.value ?? value);
+          },
         };
+
+        console.log(componentProps);
+        if (readOnly) {
+          const value = finalForm.getFieldValue(field);
+          return <div>{value}</div>;
+        }
 
         if (components[type]) {
           const CustomComponent = components[type];
           return CustomComponent(
             {
               ...componentProps,
-              onChange: (value) => {
-                finalForm.setFieldValue(field, value);
-              },
             },
-            form as unknown as FormInstance,
+            form as unknown as FormInstance
           );
         }
         switch (type) {
@@ -160,9 +164,7 @@ const Form = forwardRef<FormInstance, FormProps>(
           case 'radio':
             return <Radio.Group {...(componentProps as RadioGroupProps)} />;
           case 'checkbox':
-            return (
-              <Checkbox.Group {...(componentProps as CheckboxGroupProps)} />
-            );
+            return <Checkbox.Group {...(componentProps as CheckboxGroupProps)} />;
           case 'rate':
             return <Rate {...(componentProps as RateProps)} />;
           case 'number':
@@ -210,7 +212,7 @@ const Form = forwardRef<FormInstance, FormProps>(
               message: `请输入正确的${label}格式`,
             });
           } else if (Array.isArray(validator)) {
-            validator.forEach((rule) => rules.push(rule));
+            validator.forEach(rule => rules.push(rule));
           } else {
             rules.push(validator);
           }
@@ -227,7 +229,7 @@ const Form = forwardRef<FormInstance, FormProps>(
           colon={!!label?.trim()}
           shouldUpdate={(prevValues, curValues) => {
             if (updatedFields.has(field)) {
-              setUpdatedFields((prev) => {
+              setUpdatedFields(prev => {
                 const next = new Set(prev);
                 next.delete(field);
                 return next;
@@ -243,7 +245,7 @@ const Form = forwardRef<FormInstance, FormProps>(
 
       return hide ? (
         <AntForm.Item noStyle shouldUpdate key={field}>
-          {(finalForm) => {
+          {finalForm => {
             const values = finalForm.getFieldsValue();
             const isHidden = typeof hide === 'function' ? hide(values) : hide;
             return isHidden ? null : FormItem;
@@ -254,10 +256,7 @@ const Form = forwardRef<FormInstance, FormProps>(
       );
     };
 
-    const renderFooterContent = (
-      content: ReactNode | 'submit' | 'reset',
-      index?: number,
-    ) => {
+    const renderFooterContent = (content: ReactNode | 'submit' | 'reset', index?: number) => {
       if (content === 'submit') {
         return (
           <Button type="primary" htmlType="submit" key="form-btn-submit">
@@ -275,21 +274,15 @@ const Form = forwardRef<FormInstance, FormProps>(
       if (React.isValidElement(content)) {
         return React.cloneElement(content, { key: `content-${index}` });
       }
-      return (
-        <React.Fragment key={`content-${index}`}>{content}</React.Fragment>
-      );
+      return <React.Fragment key={`content-${index}`}>{content}</React.Fragment>;
     };
 
     const renderFooter = () => {
       if (!footer) return null;
 
       const footerItems = Array.isArray(footer) ? footer : [footer];
-      const defaultButtons = footerItems.filter(
-        (item) => item === 'submit' || item === 'reset',
-      );
-      const customItems = footerItems.filter(
-        (item) => item !== 'submit' && item !== 'reset',
-      );
+      const defaultButtons = footerItems.filter(item => item === 'submit' || item === 'reset');
+      const customItems = footerItems.filter(item => item !== 'submit' && item !== 'reset');
 
       return (
         <>
@@ -298,18 +291,14 @@ const Form = forwardRef<FormInstance, FormProps>(
               <div style={{ textAlign: 'center' }}>
                 <Space>
                   {defaultButtons.map((item, index) => (
-                    <span key={`default-${index}`}>
-                      {renderFooterContent(item)}
-                    </span>
+                    <span key={`default-${index}`}>{renderFooterContent(item)}</span>
                   ))}
                 </Space>
               </div>
             </AntForm.Item>
           )}
           {customItems.map((item, index) => (
-            <AntForm.Item key={`custom-${index}`}>
-              {renderFooterContent(item, index)}
-            </AntForm.Item>
+            <AntForm.Item key={`custom-${index}`}>{renderFooterContent(item, index)}</AntForm.Item>
           ))}
         </>
       );
@@ -328,6 +317,6 @@ const Form = forwardRef<FormInstance, FormProps>(
         {renderFooter()}
       </AntForm>
     );
-  },
+  }
 );
 export default Form;

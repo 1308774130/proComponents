@@ -16,10 +16,7 @@ import { CheckboxGroupProps } from 'antd/lib/checkbox/Group';
 import { Gutter } from 'antd/lib/grid/row';
 import type { ReactNode } from 'react';
 
-export type FormValues = Record<
-  string,
-  string | number | boolean | string[] | null | undefined
->;
+export type FormValues = Record<string, string | number | boolean | string[] | null | undefined>;
 
 type ValidatorRule = {
   type?: 'email' | 'url' | 'string' | 'number';
@@ -45,6 +42,7 @@ type BaseColumnProps = {
   readOnly?: boolean;
   width?: number | string;
   props?: BaseControlProps;
+  onChange?: (value: any, form: FormInstance) => void;
 };
 
 type PickerType = 'time' | 'date' | 'week' | 'month' | 'quarter' | 'year';
@@ -113,10 +111,7 @@ export interface CustomComponentProps {
 }
 
 // 自定义组件类型
-type CustomComponent = (
-  props: CustomComponentProps,
-  form: FormInstance,
-) => React.ReactNode;
+type CustomComponent = (props: CustomComponentProps, form: FormInstance) => React.ReactNode;
 
 export interface FormProps extends AntFormProps {
   columns: FormColumn[];

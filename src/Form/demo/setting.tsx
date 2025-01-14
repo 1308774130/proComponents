@@ -89,7 +89,7 @@ export const columns1: FormColumn[] = [
     type: 'input',
     field: 'activitiesExtra',
     label: ' ',
-    hide: (values) => !values?.activities?.includes('other'),
+    hide: values => !values?.activities?.includes('other'),
   },
   {
     type: 'switch',
@@ -130,7 +130,7 @@ export const columns1: FormColumn[] = [
   },
 ];
 
-export const columns2 = (onchange) => [
+export const columns2 = onChange => [
   {
     type: 'select',
     field: 'select1',
@@ -140,20 +140,20 @@ export const columns2 = (onchange) => [
       { label: '选项2', value: 2 },
       { label: '选项3', value: 3 },
     ],
-    onChange: onchange,
+    onChange,
   },
   {
     type: 'select',
     field: 'select2',
     label: 'select2',
     onChange: (value, form) => {
-      console.log(form);
-      // form.setFieldItem('select3', value);
+      form.setFieldValue('select3', value);
     },
   },
   {
     field: 'select3',
     label: 'select2的值',
-    hide: (values) => !values?.select2,
+    hide: values => !values?.select2,
+    readOnly: true,
   },
 ];
