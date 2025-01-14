@@ -1,8 +1,8 @@
 import { Input, Space } from 'antd';
-import { CustomComponentProps, FormRef } from 'cruise-components/Form/interface';
+import { CustomComponentProps, FormInstance } from 'cruise-components/Form/interface';
 import React, { useEffect, useState } from 'react';
 
-export const CustomInput = ({ onChange, ...props }: CustomComponentProps, form: FormRef) => {
+export const CustomInput = ({ onChange, ...props }: CustomComponentProps, form: FormInstance) => {
   const [input1, setInput1] = useState('');
   const [input2, setInput2] = useState('');
 
