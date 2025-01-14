@@ -85,7 +85,6 @@ const Form = forwardRef<FormInstance, FormProps>(
         placeholder,
         props,
         disabled = false,
-        readOnly = false,
         ...restProps
       } = column;
 
@@ -94,7 +93,6 @@ const Form = forwardRef<FormInstance, FormProps>(
         const componentProps = {
           placeholder: placeholder || defaultPlaceholder,
           disabled,
-          readOnly,
           style: {
             width: restProps.width || type === 'switch' ? 'auto' : '100%',
             ...props?.style,
@@ -105,19 +103,10 @@ const Form = forwardRef<FormInstance, FormProps>(
             // 先调用原始的 onChange
             if (restProps?.onChange) {
               // 处理不同控件的值
-              const finalValue = value?.target?.value ?? value;
-              restProps.onChange(finalValue, finalForm, ...args);
+              restProps.onChange(value, finalForm, ...args);
             }
-            // 设置表单值
-            finalForm.setFieldValue(field, value?.target?.value ?? value);
           },
         };
-
-        console.log(componentProps);
-        if (readOnly) {
-          const value = finalForm.getFieldValue(field);
-          return <div>{value}</div>;
-        }
 
         if (components[type]) {
           const CustomComponent = components[type];
