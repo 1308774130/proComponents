@@ -120,6 +120,7 @@ export interface FormProps extends AntFormProps {
   components?: Record<string, CustomComponent>;
   columnGrid?: number;
   columnGap?: Gutter | [Gutter, Gutter];
+  form?: FormInstance;
 }
 
 export interface FormInstance extends AntFormInstance {

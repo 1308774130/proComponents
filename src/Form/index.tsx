@@ -32,7 +32,9 @@ import { Select } from 'cruise-components';
 import { SelectProps } from 'cruise-components/Select/interface';
 import React, { ReactNode, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import type { FormColumn, FormInstance, FormProps } from './interface';
+import { useForm } from './useForm';
 
+export { useForm };
 const Form = forwardRef<FormInstance, FormProps>(
   (
     {
@@ -48,7 +50,7 @@ const Form = forwardRef<FormInstance, FormProps>(
     },
     ref
   ) => {
-    const [form] = AntForm.useForm();
+    const [form] = useForm();
     const finalForm = propsForm || form;
     const [formColumns, setFormColumns] = useState<FormColumn[]>(columns);
     const [updatedFields, setUpdatedFields] = useState<Set<string>>(new Set());
