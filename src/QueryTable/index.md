@@ -18,17 +18,19 @@
 
 ## API
 
-### QueryTable Props
+### QueryTableProps
 
-| 参数          | 说明             | 类型                                                                      | 默认值 |
-| ------------- | ---------------- | ------------------------------------------------------------------------- | ------ |
-| formProps     | Form 组件的属性  | `Omit<FormProps, 'onFinish'>`                                             | -      |
-| formColumns   | 查询表单的列配置 | `FormColumn[]`                                                            | `[]`   |
-| optionButtons | 操作按钮配置     | `OptionButton[]`                                                          | `[]`   |
-| tableProps    | Table 组件的属性 | `Omit<TableProps, 'dataSource'>`                                          | -      |
-| request       | 数据请求方法     | `(params: any) => Promise<{ data: any[]; total: number }>`                | -      |
-| defaultParams | 默认查询参数     | `Record<string, any>`                                                     | `{}`   |
-| customRender  | 自定义渲染内容   | `{ formSlot?: ReactNode; buttonSlot?: ReactNode; tableSlot?: ReactNode }` | -      |
+| 参数          | 说明                               | 类型                                                                                                                          | 默认值                |
+| ------------- | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | --------------------- |
+| formProps     | Form 组件的属性(参考`FormProps`)   | `Omit<FormProps, 'onFinish'>`                                                                                                 | -                     |
+| searchColumns | 查询表单的列配置(参考`FormColumn`) | `FormColumn[]`                                                                                                                | `[]`                  |
+| refreshDeps   | 刷新依赖数组[可选]                 | `React.DependencyList`                                                                                                        | `[]`                  |
+| data          | 静态数据[可选]                     | `any[]`                                                                                                                       | `[]`                  |
+| remoteRequest | 远程请求方法[可选]                 | `(params: any) => Promise<{ data: any[]; total: number }>`                                                                    | -                     |
+| firstRequest  | 初次渲染是否自动查询[可选]         | `boolean`                                                                                                                     | `true`                |
+| autoRefresh   | 是否自动刷新[可选]                 | `boolean`                                                                                                                     | `false`               |
+| defaultBtn    | 默认展示提交和重置按钮[可选]       | `('submit' \| 'reset')[]`                                                                                                     | `['submit', 'reset']` |
+| optionButtons | 操作按钮配置[可选]                 | `{ text: string; type?: 'primary' \| 'link' \| 'text' \| 'default' \| 'dashed'; onClick?: () => void; [key: string]: any }[]` | -                     |
 
 ### OptionButton
 

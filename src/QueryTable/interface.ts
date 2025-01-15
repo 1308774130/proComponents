@@ -13,7 +13,6 @@ export interface QueryTableProps<T = any> extends TableProps<T> {
   // Form 相关配置
   searchColumns?: FormColumn[];
   formProps?: Omit<FormProps, 'columns' | 'header' | 'footer'> & {
-    form?: ReturnType<typeof useForm>[0];
     defaultType?: 'simple' | 'advance';
   };
 
@@ -24,8 +23,7 @@ export interface QueryTableProps<T = any> extends TableProps<T> {
   data?: T[];
   remoteRequest?: (params: any) => Promise<{ list: T[]; total: number }>;
   firstRequest?: boolean;
-  autoRefresh?: boolean; // 是否自动刷新
-  noReset?: boolean; // 是否不展示重置按钮
+  defaultBtn?: ('submit' | 'reset')[]; // 默认展示提交和重置按钮，传[]则不展示
 
   // 操作按钮配置
   optionButtons?: {
