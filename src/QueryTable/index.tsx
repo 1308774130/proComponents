@@ -2,13 +2,7 @@ import { useAntdTable } from 'ahooks';
 import { Button, Card, Space, Table, TablePaginationConfig } from 'antd';
 import { useWatch } from 'antd/lib/form/Form';
 import { Form, useForm } from 'cruise-components';
-import React, {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useState,
-} from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import type { QueryTableProps, QueryTableRef } from './interface';
 
 const DEFAULT_PAGE_SIZE = 10;
@@ -37,7 +31,7 @@ const QueryTable = forwardRef<QueryTableRef, QueryTableProps>(
       optionButtons = [],
       ...restProps
     }: QueryTableProps<T>,
-    ref,
+    ref
   ) => {
     const [innerFormRef] = useForm();
     const formRef = formProps?.form || innerFormRef;
@@ -46,15 +40,11 @@ const QueryTable = forwardRef<QueryTableRef, QueryTableProps>(
       pageSize: DEFAULT_PAGE_SIZE,
     });
     // const watchValues = useWatchForm(formRef);
-    const watchValues = useWatch(['name2'], formRef);
+    const watchValues = useWatch([], formRef);
 
     useEffect(() => {
-      console.log(111, watchValues);
+      submit();
     }, [watchValues]);
-
-    useEffect(() => {
-      console.log(refreshDeps);
-    }, [refreshDeps]);
 
     useEffect(() => {
       if (paginationProps !== false && typeof paginationProps === 'object') {
@@ -72,9 +62,8 @@ const QueryTable = forwardRef<QueryTableRef, QueryTableProps>(
         pageSize = DEFAULT_PAGE_SIZE,
         ...paginationProps
       }: TablePaginationConfig,
-      formData: Record<string, any>,
+      formData: Record<string, any>
     ) => {
-      console.log(formData);
       if (remoteRequest) {
         // 远程请求数据
         return remoteRequest({
@@ -198,7 +187,7 @@ const QueryTable = forwardRef<QueryTableRef, QueryTableProps>(
         />
       </Card>
     );
-  },
+  }
 );
 
 export default QueryTable;
