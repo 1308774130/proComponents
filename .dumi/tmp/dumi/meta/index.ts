@@ -11,6 +11,8 @@ import { frontmatter as fm3, toc as t3 } from '/Users/lyralei/Desktop/repository
 import { demoIndex as dmi3 } from '/Users/lyralei/Desktop/repository/mine/proComponents/src/QueryTable/index.md?type=demo-index';
 import { frontmatter as fm4, toc as t4 } from '/Users/lyralei/Desktop/repository/mine/proComponents/src/Select/index.md?type=frontmatter';
 import { demoIndex as dmi4 } from '/Users/lyralei/Desktop/repository/mine/proComponents/src/Select/index.md?type=demo-index';
+import { frontmatter as fm5, toc as t5 } from '/Users/lyralei/Desktop/repository/mine/proComponents/src/Table/index.md?type=frontmatter';
+import { demoIndex as dmi5 } from '/Users/lyralei/Desktop/repository/mine/proComponents/src/Table/index.md?type=demo-index';
 
 export const filesMeta = {
   'docs/index': {
@@ -42,6 +44,12 @@ export const filesMeta = {
     toc: t4,
     demoIndex: dmi4,
     textGetter: () => import(/* webpackChunkName: "meta__Select" */'/Users/lyralei/Desktop/repository/mine/proComponents/src/Select/index.md?type=text'),
+  },
+  'components/Table/index': {
+    frontmatter: fm5,
+    toc: t5,
+    demoIndex: dmi5,
+    textGetter: () => import(/* webpackChunkName: "meta__Table" */'/Users/lyralei/Desktop/repository/mine/proComponents/src/Table/index.md?type=text'),
   },
 }
 
