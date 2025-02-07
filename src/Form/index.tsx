@@ -31,7 +31,7 @@ import { Rule } from 'antd/lib/form';
 import { Select } from 'cruise-components';
 import { SelectProps } from 'cruise-components/Select/interface';
 import React, { ReactNode, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
-import type { FormColumn, FormInstance, FormProps } from './interface';
+import type { CustomFormComponent, FormColumn, FormInstance, FormProps } from './interface';
 import { useForm } from './useForm';
 
 export { useForm };
@@ -46,23 +46,24 @@ const Form = forwardRef<FormInstance, FormProps>(
       form: propsForm,
       columnGrid = 1,
       columnGap = 16,
+      children,
       ...restProps
     },
     ref
   ) => {
     const [form] = useForm();
     const finalForm = propsForm || form;
-    const [formColumns, setFormColumns] = useState<FormColumn[]>(columns);
+    const [formColumns, setFormColumns] = useState<FormColumn[] | undefined>(columns);
     const [updatedFields, setUpdatedFields] = useState<Set<string>>(new Set());
 
     finalForm.setFieldItem = (field: string, config: Partial<FormColumn>) => {
       setFormColumns(prev =>
-        prev.map(item => (item.field === field ? { ...item, ...config } : item))
+        prev?.map(item => (item.field === field ? { ...item, ...config } : item))
       );
       setUpdatedFields(prev => new Set(prev).add(field));
     };
 
-    finalForm.getFieldItem = (field: string) => formColumns.find(item => item.field === field);
+    finalForm.getFieldItem = (field: string) => formColumns?.find(item => item.field === field);
 
     useImperativeHandle(ref, () => finalForm, [finalForm]);
 
@@ -298,16 +299,28 @@ const Form = forwardRef<FormInstance, FormProps>(
     return (
       <AntForm form={finalForm} onFinish={onFinish} {...restProps}>
         {header}
-        <Row gutter={columnGap}>
-          {formColumns.map((column, index) => (
-            <Col span={span} key={column.field || `column-${index}`}>
-              {renderFormItem(column)}
-            </Col>
-          ))}
-        </Row>
+        {formColumns ? (
+          <Row gutter={columnGap}>
+            {formColumns.map((column, index) => (
+              <Col span={span} key={column.field || `column-${index}`}>
+                {renderFormItem(column)}
+              </Col>
+            ))}
+          </Row>
+        ) : (
+          <>{children}</>
+        )}
         {renderFooter()}
       </AntForm>
     );
   }
-);
+) as CustomFormComponent;
+
+Form.Item = AntForm.Item;
+Form.List = AntForm.List;
+Form.Provider = AntForm.Provider;
+Form.ErrorList = AntForm.ErrorList;
+Form.useFormInstance = AntForm.useFormInstance;
+Form.useWatch = AntForm.useWatch;
+
 export default Form;

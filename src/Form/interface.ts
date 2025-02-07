@@ -3,6 +3,7 @@ import type {
   FormInstance as AntFormInstance,
   FormProps as AntFormProps,
   DatePickerProps,
+  FormItemProps,
   InputNumberProps,
   InputProps,
   MentionProps,
@@ -13,8 +14,14 @@ import type {
   TreeSelectProps,
 } from 'antd';
 import { CheckboxGroupProps } from 'antd/lib/checkbox/Group';
+import { FormListProps } from 'antd/lib/form';
+import { FormProviderProps } from 'antd/lib/form/context';
+import ErrorList from 'antd/lib/form/ErrorList';
+import { useWatch } from 'antd/lib/form/Form';
+import useFormInstance from 'antd/lib/form/hooks/useFormInstance';
 import { Gutter } from 'antd/lib/grid/row';
-import type { ReactNode } from 'react';
+import type { ForwardRefExoticComponent, ReactNode, RefAttributes } from 'react';
+import { useForm } from './useForm';
 
 export type FormValues = Record<string, string | number | boolean | string[] | null | undefined>;
 
@@ -114,7 +121,7 @@ export interface CustomComponentProps {
 type CustomComponent = (props: CustomComponentProps, form: FormInstance) => React.ReactNode;
 
 export interface FormProps extends AntFormProps {
-  columns: FormColumn[];
+  columns?: FormColumn[];
   header?: ReactNode;
   footer?: FooterContent;
   components?: Record<string, CustomComponent>;
@@ -127,3 +134,17 @@ export interface FormInstance extends AntFormInstance {
   setFieldItem: (field: string, config: Partial<FormColumn>) => void;
   getFieldItem: (field: string) => FormColumn | undefined;
 }
+
+export type CustomFormComponent = ForwardRefExoticComponent<
+  FormProps & RefAttributes<FormInstance>
+> & {
+  Item: React.FC<FormItemProps>;
+  List: React.FC<FormListProps>;
+  Provider: React.FC<FormProviderProps>;
+  useForm: typeof useForm;
+  useFormInstance: typeof useFormInstance;
+  useWatch: typeof useWatch;
+  ErrorList: typeof ErrorList;
+  /** @deprecated Only for warning usage. Do not use. */
+  create: () => void;
+};

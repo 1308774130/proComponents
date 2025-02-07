@@ -11,7 +11,7 @@ const Demo: React.FC = () => {
   const handleSubmit = async (values: any) => {
     try {
       // 模拟提交
-      await new Promise((resolve) => {
+      await new Promise(resolve => {
         setTimeout(resolve, 1000);
       });
       message.success('预订成功！我们将尽快与您联系确认行程。');

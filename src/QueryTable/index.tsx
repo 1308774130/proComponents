@@ -1,36 +1,30 @@
 import { useAntdTable } from 'ahooks';
-import { Button, Card, Space, Table, TablePaginationConfig } from 'antd';
+import { Button, Card, Space, TablePaginationConfig } from 'antd';
 import { useWatch } from 'antd/lib/form/Form';
-import { Form, useForm } from 'cruise-components';
+import { Form, Table, useForm } from 'cruise-components';
 import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import type { QueryTableProps, QueryTableRef } from './interface';
 
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_CURRENT = 1;
-const QueryTable = forwardRef<QueryTableRef, QueryTableProps>(
-  <T extends Record<string, any>>(
+
+const QueryTable = forwardRef<QueryTableRef, QueryTableProps<any>>(
+  (
     {
-      // Form props
       searchColumns,
       formProps,
-
-      // Table props
       columns,
       rowKey,
       pagination: paginationProps,
       refreshDeps = [],
-
-      // Data props
       data: staticData = [],
       remoteRequest,
       firstRequest = true,
       autoRefresh = true,
       noReset = false,
-
-      // Other props
       optionButtons = [],
       ...restProps
-    }: QueryTableProps<T>,
+    },
     ref
   ) => {
     const [innerFormRef] = useForm();
@@ -48,14 +42,13 @@ const QueryTable = forwardRef<QueryTableRef, QueryTableProps>(
 
     useEffect(() => {
       if (paginationProps !== false && typeof paginationProps === 'object') {
-        setPagination({
-          ...pagination,
+        setPagination(prev => ({
+          ...prev,
           ...paginationProps,
-        });
+        }));
       }
     }, [paginationProps]);
 
-    // 处理数据获取
     const getTableData = async (
       {
         current = DEFAULT_CURRENT,
@@ -64,52 +57,50 @@ const QueryTable = forwardRef<QueryTableRef, QueryTableProps>(
       }: TablePaginationConfig,
       formData: Record<string, any>
     ) => {
-      if (remoteRequest) {
-        // 远程请求数据
-        return remoteRequest({
-          pageIndex: current,
-          pageSize,
-          ...paginationProps,
-          ...formData,
-        });
-      } else {
-        // 处理静态数据
-        const start = (current - 1) * pageSize;
-        const end = start + pageSize;
-        const list = staticData.slice(start, end);
-        return Promise.resolve({
-          list,
-          total: staticData.length,
-        });
+      try {
+        if (remoteRequest) {
+          return await remoteRequest({
+            pageIndex: current,
+            pageSize,
+            ...paginationProps,
+            ...formData,
+          });
+        } else {
+          const start = (current - 1) * pageSize;
+          const end = start + pageSize;
+          const list = staticData.slice(start, end);
+          return { list, total: staticData.length };
+        }
+      } catch (error) {
+        console.error('Failed to fetch table data:', error);
+        return { list: [], total: 0 };
       }
     };
 
-    // 使用 ahooks 的 useAntdTable
     const { tableProps, search, loading } = useAntdTable(getTableData, {
       defaultPageSize: pagination.pageSize,
       form: formRef,
       manual: !firstRequest,
       defaultType: formProps?.defaultType || 'simple',
-      refreshDeps: refreshDeps,
+      refreshDeps,
     });
 
     const { submit, reset } = search;
 
-    // 暴露给外部的方法
     useImperativeHandle(ref, () => ({
-      resetParams: reset, // 重置form表单
+      resetParams: reset,
       submitParams: (params: Record<string, any>) => {
         formRef?.setFieldsValue(params);
         submit();
-      }, // 手动提交查询表单
-      refresh: submit, // 刷新表格
-      getColumns: () => columns, // 获取列配置
-      getDataSource: () => tableProps.dataSource || [], // 获取表格数据
+      },
+      refresh: submit,
+      getColumns: () => columns,
+      getDataSource: () => tableProps.dataSource || [],
       getParams: () => ({
         ...formRef?.getFieldsValue(),
         pageIndex: tableProps.pagination?.current,
         pageSize: tableProps.pagination?.pageSize,
-      }), // 获取查询参数
+      }),
     }));
 
     const OptionsBtn = useMemo(() => {
@@ -168,7 +159,7 @@ const QueryTable = forwardRef<QueryTableRef, QueryTableProps>(
         {OptionsBtn}
 
         {/* 数据表格 */}
-        <Table<T>
+        <Table
           {...restProps}
           {...tableProps}
           columns={columns}

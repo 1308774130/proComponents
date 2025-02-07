@@ -4,7 +4,6 @@ import ColumnGroup from 'antd/lib/table/ColumnGroup';
 
 // 定义自定义 Table 的额外属性
 export interface TableExtraProps<T> {
-  refreshDeps?: any[];
   remoteRequest?: (params: Record<string, any>) => Promise<{ list: T[]; total: number }>;
   firstRequest?: boolean;
 }

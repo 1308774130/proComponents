@@ -2,7 +2,7 @@
 
 基于 Antd Table 的二次封装，为需要远程加载数据场景提供支持。
 
-## 远程记载数据 🌰
+## 远程加载数据 🌰
 
 <code src="./demo/index.tsx"></code>
 

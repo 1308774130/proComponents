@@ -13,7 +13,6 @@ const Table = forwardRef<TableRef<any>, TableProps<any>>(
       columns,
       rowKey,
       pagination: paginationProps,
-      refreshDeps = [],
       dataSource: staticData = [],
       remoteRequest,
       firstRequest = true,
@@ -32,7 +31,7 @@ const Table = forwardRef<TableRef<any>, TableProps<any>>(
       if (firstRequest) {
         getTableData();
       }
-    }, [firstRequest, ...refreshDeps]);
+    }, [firstRequest]);
 
     useEffect(() => {
       if (!remoteRequest) {
