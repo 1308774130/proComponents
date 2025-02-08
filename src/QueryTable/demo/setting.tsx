@@ -1,4 +1,4 @@
-import { Space, Tag } from 'antd';
+import { InputNumber, Space, Tag } from 'antd';
 import React from 'react';
 
 // 表单配置
@@ -35,9 +35,39 @@ export const tableColumns = [
     title: '状态',
     dataIndex: 'status',
     render: (status: number) => (
-      <Tag color={status === 1 ? 'success' : 'error'}>
-        {status === 1 ? '正常' : '禁用'}
-      </Tag>
+      <Tag color={status === 1 ? 'success' : 'error'}>{status === 1 ? '正常' : '禁用'}</Tag>
+    ),
+  },
+  {
+    title: '操作',
+    key: 'action',
+    render: () => (
+      <Space size="middle">
+        <a>编辑</a>
+        <a>删除</a>
+      </Space>
+    ),
+  },
+];
+export const editTableColumns = [
+  {
+    title: '姓名',
+    dataIndex: 'name1',
+    editable: true,
+  },
+  {
+    title: '年龄',
+    dataIndex: 'age',
+    editable: true,
+    render: (text: string, record: any, save: () => void) => {
+      return <InputNumber value={text} onChange={value => (record.age = value)} onBlur={save} />;
+    },
+  },
+  {
+    title: '状态',
+    dataIndex: 'status',
+    render: (status: number) => (
+      <Tag color={status === 1 ? 'success' : 'error'}>{status === 1 ? '正常' : '禁用'}</Tag>
     ),
   },
   {

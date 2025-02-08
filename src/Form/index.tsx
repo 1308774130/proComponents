@@ -322,5 +322,6 @@ Form.Provider = AntForm.Provider;
 Form.ErrorList = AntForm.ErrorList;
 Form.useFormInstance = AntForm.useFormInstance;
 Form.useWatch = AntForm.useWatch;
+Form.useForm = useForm;
 
 export default Form;

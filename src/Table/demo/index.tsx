@@ -12,19 +12,24 @@ const Demo = () => {
     return new Promise<{ list: any[]; total: number }>(resolve => {
       setTimeout(() => {
         console.log('请求了', new Date().getTime());
+
+        // 生成随机数据
+        const randomList = Array.from({ length: 10 }, (_, index) => {
+          const names = ['张', '李', '王', '赵', '孙', '周', '吴', '郑', '陈', '马'];
+          const randomName =
+            names[Math.floor(Math.random() * names.length)] +
+            names[Math.floor(Math.random() * names.length)] +
+            (Math.random() > 0.5 ? names[Math.floor(Math.random() * names.length)] : '');
+          return {
+            id: index + 1,
+            name1: randomName,
+            age: Math.floor(Math.random() * 50) + 20, // 20-70岁之间
+            status: Math.random() > 0.5 ? 1 : 0,
+          };
+        });
+
         resolve({
-          list: [
-            { id: 1, name1: '张三', age: 25, status: 1 },
-            { id: 2, name1: '李四', age: 30, status: 0 },
-            { id: 3, name1: '王五', age: 35, status: 1 },
-            { id: 4, name1: '赵六', age: 40, status: 0 },
-            { id: 5, name1: '孙七', age: 45, status: 1 },
-            { id: 6, name1: '周八', age: 50, status: 0 },
-            { id: 7, name1: '吴九', age: 55, status: 1 },
-            { id: 8, name1: '郑十', age: 60, status: 0 },
-            { id: 9, name1: '陈十一', age: 65, status: 1 },
-            { id: 10, name1: '王十二', age: 70, status: 0 },
-          ],
+          list: randomList,
           total: 20,
         });
       }, 1000);

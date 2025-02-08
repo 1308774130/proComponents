@@ -24,3 +24,22 @@ export type TableWithColumns<T> = React.ForwardRefExoticComponent<
   Column: typeof Column;
   ColumnGroup: typeof ColumnGroup;
 };
+
+export interface EditableRowProps {
+  index: number;
+}
+
+export interface EditableCellProps<T> {
+  title: React.ReactNode;
+  editable: boolean;
+  children: React.ReactNode;
+  dataIndex: keyof T;
+  record: T;
+  render: (
+    text: string,
+    record: T,
+    index: string | number | symbol,
+    save: () => void
+  ) => React.ReactNode;
+  handleSave: (record: T) => void;
+}

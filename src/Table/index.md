@@ -10,6 +10,10 @@
 
 <code src="./demo/index2.tsx"></code>
 
+## 可编辑表格 🌰
+
+<code src="./demo/editIndex.tsx"></code>
+
 ## API
 
 ### Table Props

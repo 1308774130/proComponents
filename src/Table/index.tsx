@@ -1,8 +1,8 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import { Table as AntTable, TablePaginationConfig } from 'antd';
 import { TableProps, TableRef, TableWithColumns } from './interface';
-import { useAntdTable } from 'ahooks';
-import { Button, Card, Space } from 'antd';
+import { EditableRow } from './components/editTableRow';
+import { EditableCell } from './components/editTableCell';
 
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_CURRENT = 1;
@@ -10,7 +10,7 @@ const DEFAULT_CURRENT = 1;
 const Table = forwardRef<TableRef<any>, TableProps<any>>(
   (
     {
-      columns,
+      columns: originalColumns,
       rowKey,
       pagination: paginationProps,
       dataSource: staticData = [],
@@ -67,6 +67,36 @@ const Table = forwardRef<TableRef<any>, TableProps<any>>(
       }
     };
 
+    const handleSave = (row: any) => {
+      setDataSource(prevData => {
+        const newData = [...prevData];
+        const index = newData.findIndex(item => row[rowKey] === item[rowKey]);
+        const item = newData[index];
+        newData[index] = { ...item, ...row };
+        return newData;
+      });
+    };
+
+    const columns = useMemo(() => {
+      return originalColumns?.map((col: any) => {
+        console.log(col, 'col');
+        if (!col.editable) {
+          return col;
+        }
+        return {
+          ...col,
+          onCell: (record: any) => ({
+            record,
+            editable: col.editable,
+            dataIndex: col.dataIndex,
+            render: col.render,
+            title: col.title,
+            handleSave,
+          }),
+        };
+      });
+    }, [originalColumns]);
+
     useImperativeHandle(ref, () => ({
       refresh: getTableData,
       getDataSource: () => [...dataSource],
@@ -83,6 +113,12 @@ const Table = forwardRef<TableRef<any>, TableProps<any>>(
         onChange={pagination => {
           setPagination(pagination);
           getTableData();
+        }}
+        components={{
+          body: {
+            row: EditableRow,
+            cell: EditableCell,
+          },
         }}
       />
     );
