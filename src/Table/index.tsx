@@ -1,8 +1,14 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from 'react';
-import { Table as AntTable, TablePaginationConfig } from 'antd';
-import { TableProps, TableRef, TableWithColumns } from './interface';
-import { EditableRow } from './components/editTableRow';
-import { EditableCell } from './components/editTableCell';
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useState,
+} from "react";
+import { Table as AntTable, TablePaginationConfig } from "antd";
+import { TableProps, TableRef, TableWithColumns } from "./interface";
+import { EditableRow } from "./components/editTableRow";
+import { EditableCell } from "./components/editTableCell";
 
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_CURRENT = 1;
@@ -16,16 +22,19 @@ const Table = forwardRef<TableRef<any>, TableProps<any>>(
       dataSource: staticData = [],
       remoteRequest,
       firstRequest = true,
+      editChange,
       ...restProps
     },
     ref
   ) => {
     const [dataSource, setDataSource] = useState(staticData);
     const [total, setTotal] = useState<number>(staticData?.length || 0);
-    const [pagination, setPagination] = useState<TablePaginationConfig | false>({
-      current: DEFAULT_CURRENT,
-      pageSize: DEFAULT_PAGE_SIZE,
-    });
+    const [pagination, setPagination] = useState<TablePaginationConfig | false>(
+      {
+        current: DEFAULT_CURRENT,
+        pageSize: DEFAULT_PAGE_SIZE,
+      }
+    );
 
     useEffect(() => {
       if (firstRequest) {
@@ -43,7 +52,7 @@ const Table = forwardRef<TableRef<any>, TableProps<any>>(
     useEffect(() => {
       if (paginationProps === false) {
         setPagination(false);
-      } else if (typeof paginationProps === 'object') {
+      } else if (typeof paginationProps === "object") {
         setPagination({
           ...pagination,
           ...paginationProps,
@@ -63,23 +72,32 @@ const Table = forwardRef<TableRef<any>, TableProps<any>>(
         setDataSource(res.list);
         setTotal(res.total);
       } catch (error) {
-        console.error('Failed to fetch table data:', error);
+        console.error("Failed to fetch table data:", error);
       }
     };
 
     const handleSave = (row: any) => {
-      setDataSource(prevData => {
+      setDataSource((prevData) => {
         const newData = [...prevData];
-        const index = newData.findIndex(item => row[rowKey] === item[rowKey]);
+        const index = newData.findIndex((item) => {
+          if (typeof rowKey === "string") {
+            return row[rowKey] === item[rowKey];
+          } else if (typeof rowKey === "function") {
+            return rowKey(row) === rowKey(item);
+          }
+          console.error("rowKey", rowKey, "未找到有效目标");
+          return false;
+        });
         const item = newData[index];
         newData[index] = { ...item, ...row };
+        editChange && editChange(newData[index], index, newData);
         return newData;
       });
     };
 
     const columns = useMemo(() => {
       return originalColumns?.map((col: any) => {
-        console.log(col, 'col');
+        console.log(col, "col");
         if (!col.editable) {
           return col;
         }
@@ -110,7 +128,7 @@ const Table = forwardRef<TableRef<any>, TableProps<any>>(
         rowKey={rowKey}
         pagination={pagination ? { ...pagination, total } : false}
         dataSource={dataSource}
-        onChange={pagination => {
+        onChange={(pagination) => {
           setPagination(pagination);
           getTableData();
         }}

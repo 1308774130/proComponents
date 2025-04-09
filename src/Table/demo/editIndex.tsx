@@ -31,6 +31,10 @@ const Demo = () => {
     });
   };
 
+  const handleEditChange = (row: any, index: number, record: any[]) => {
+    console.log(row, index, record);
+  };
+
   return (
     <Table
       ref={tableRef}
@@ -38,6 +42,7 @@ const Demo = () => {
       firstRequest={true}
       rowKey="id"
       columns={editTableColumns}
+      editChange={handleEditChange}
     />
   );
 };

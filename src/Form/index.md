@@ -14,6 +14,10 @@
 
 <code src="./demo/form3.tsx"></code>
 
+## 只读模式 🌰
+
+<code src="./demo/readOnly.tsx"></code>
+
 ## API
 
 ### FormProps

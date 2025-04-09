@@ -11,7 +11,7 @@ const Demo = () => {
   const handleRequest = async (params: any) => {
     console.log('查询参数:', params);
     // 模拟接口请求
-    return new Promise<{ list: any[]; total: number }>((resolve) => {
+    return new Promise<{ list: any[]; total: number }>(resolve => {
       setTimeout(() => {
         console.log('请求了', new Date().getTime());
         resolve({

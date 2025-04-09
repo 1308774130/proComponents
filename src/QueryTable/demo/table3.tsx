@@ -12,7 +12,7 @@ const Demo = () => {
   // 模拟数据请求
   const handleRequest = async (params: any) => {
     // 模拟接口请求
-    return new Promise<{ list: any[]; total: number }>((resolve) => {
+    return new Promise<{ list: any[]; total: number }>(resolve => {
       setTimeout(() => {
         console.log('请求了', new Date().getTime());
         resolve({

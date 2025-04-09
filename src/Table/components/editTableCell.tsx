@@ -1,6 +1,6 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useState } from 'react';
 import { EditableCellProps } from '../interface';
-import { Input, InputRef } from 'antd';
+import { Input } from 'antd';
 import { EditableContext } from './editTableRow';
 import { Form } from 'cruise-components';
 import React from 'react';

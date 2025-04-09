@@ -22,37 +22,13 @@ const Demo: React.FC = () => {
     }
   };
 
-  // 填充表单数据
-  const fillFormData = () => {
-    console.log('form', form, defaultValues);
-    form.setFieldsValue(defaultValues);
-  };
-
   return (
     <Form
       form={form}
       columns={columns1}
       onFinish={handleSubmit}
-      header={
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            margin: '20px 0',
-          }}
-        >
-          <h2>邮轮跟团游预订表单</h2>
-          <Button type="primary" onClick={fillFormData}>
-            填充示例数据
-          </Button>
-        </div>
-      }
-      footer={[
-        'submit',
-        'reset',
-        '我是footer单独一行自定义的文字',
-        <div key="footer-block">我是footer单独一行的块状</div>,
-      ]}
+      initialValues={defaultValues}
+      readOnly={true}
       labelCol={{ span: 6 }}
       wrapperCol={{ span: 14 }}
       components={{
